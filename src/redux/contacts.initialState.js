@@ -1,4 +1,8 @@
 export const contactsInitialState = {
-    contacts: [],
-    filter: ''
-}
+    contacts: {
+      items: [],
+      isLoading: false,
+      error: null
+    },
+    filter: ""
+  }

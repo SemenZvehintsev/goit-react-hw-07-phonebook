@@ -1,8 +1,9 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import styles from 'components/ContactForm/ContactForm.module.css'
 import { useDispatch, useSelector } from "react-redux";
 import { getContacts } from "redux/selectors";
-import { addContact } from "redux/contacts.slice";
+import { addContact, fetchContacts } from "redux/contacts.thunk";
+
 
 export const ContactForm = () => {
     const dispatch = useDispatch();
@@ -10,12 +11,17 @@ export const ContactForm = () => {
     const [name, setName] = useState('');
     const [number, setNumber] = useState('');
 
+    useEffect(() => {
+        dispatch(fetchContacts())
+    }, [dispatch])
+
     const handleSubmit =(event) => {
         event.preventDefault();
         if (contacts.map(({contactName}) => contactName.toLowerCase()).includes(name.toLowerCase())) { 
             alert(`${name} is already in contacts.`)} 
         else {
-            dispatch(addContact(name, number));
+            const newContact = {contactName: name, contactNumber: number}
+            dispatch(addContact(newContact));
             setName('');
             setNumber('');
         }
